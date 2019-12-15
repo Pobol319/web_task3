@@ -1,0 +1,58 @@
+{
+  "restaurantName": "Mcdonalds",
+  "cashDesks": [
+    {
+      "numberOfCashDesk": "1",
+      "timeOfServiceForOneProduct": "350"
+    },
+    {
+      "numberOfCashDesk": "2",
+      "timeOfServiceForOneProduct": "400"
+    },
+    {
+      "numberOfCashDesk": "3",
+      "timeOfServiceForOneProduct": "600"
+    },
+    {
+      "numberOfCashDesk": "4",
+      "timeOfServiceForOneProduct": "250"
+    }
+  ],
+  "clients": [
+    {
+      "name": "1",
+      "numberOfProducts": "5",
+      "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "2",
+      "numberOfProducts": "10",
+      "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "3",
+      "numberOfProducts": "35",
+      "clientPriority": "OUT_OF_TURN"
+    },
+    {
+      "name": "4",
+      "numberOfProducts": "7",
+      "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "5",
+      "numberOfProducts": "1",
+      "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "6",
+      "numberOfProducts": "14",
+      "clientPriority": "OUT_OF_TURN"
+    },
+    {
+      "name": "7",
+      "numberOfProducts": "3",
+      "clientPriority": "IN_ORDER"
+    }
+  ]
+}

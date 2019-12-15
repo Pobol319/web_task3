@@ -1,38 +1,39 @@
 package com.epam.task.entity;
 
+import com.epam.task.comparator.ClientPriorityComparator;
 import com.epam.task.exception.ResourceException;
+import org.apache.logging.log4j.core.net.Priority;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CashDesk{
-    
-    private ReentrantLock lock = new ReentrantLock();
-    private LinkedList<Client> clients;
-    private int number;
-    private int timeOfService;
+    private static Lock lock = new ReentrantLock();
+    private static Lock lockForServing = new ReentrantLock();
+    private Queue<Client> clients;
+    private int numberOfCashDesk;
+    private int timeOfServiceForOneProduct;
 
-    public CashDesk(int number, int timeOfService) {
-        clients = new LinkedList();
-        this.number = number;
-        this.timeOfService = timeOfService;
-
+    public CashDesk(int numberOfCashDesk, int timeOfServiceForOneProduct) {
+        clients = new PriorityQueue<>(new ClientPriorityComparator());
+        this.numberOfCashDesk = numberOfCashDesk;
+        this.timeOfServiceForOneProduct = timeOfServiceForOneProduct;
     }
 
     public void serveClient(Client client) throws ResourceException {
-        System.out.println("Client " + client.getClientName() + " is serving on cashDesk#" + getNumber());
+        System.out.println("Client " + client.getClientName() + " is serving on cashDesk#" + getNumberOfCashDesk());
         try {
-            client.sleep(timeOfService * client.getItemsInOrder());
+            TimeUnit.MILLISECONDS.sleep(timeOfServiceForOneProduct * client.getNumberOfProducts());
         } catch (InterruptedException e) {
             throw new ResourceException("InterruptedException!!!", e);
         }
         System.out.println("Client " + client.getClientName() + " is served");
     }
 
-    public List<Client> getClients() {
-        return Collections.unmodifiableList(clients);
+    public Queue<Client> getClients() {
+        return clients;
     }
 
     public void addClient(Client client) {
@@ -40,14 +41,14 @@ public class CashDesk{
     }
 
     public void removeClient(Client client) {
-        clients.remove(client);
+        clients.poll();
     }
 
-    public int getNumber() {
-        return number;
+    public int getNumberOfCashDesk() {
+        return numberOfCashDesk;
     }
 
-    public ReentrantLock getLock() {
+    public Lock getLock() {
         return lock;
     }
 }

@@ -8,11 +8,11 @@ public class Restaurant {
     private static Restaurant instance = null;
     private static ReentrantLock lock = new ReentrantLock();
     private String name;
-    private List cashDesks;
+    private List<CashDesk> cashDesks;
 
     private Restaurant(String name) {
         this.name = name;
-        cashDesks = new ArrayList();
+        cashDesks = new ArrayList<CashDesk>();
     }
 
     public static Restaurant getInstance(String name) {

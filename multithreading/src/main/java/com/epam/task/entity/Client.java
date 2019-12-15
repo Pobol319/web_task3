@@ -4,32 +4,46 @@ import com.epam.task.exception.ResourceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Client extends Thread {
+import java.util.List;
+
+public class Client implements Runnable {
     private final static Logger LOG = LogManager.getLogger(Client.class);
     private Restaurant restaurant;
     private CashDesk cashDesk;
     private String name;
-    private int itemsInOrder;
+    private int numberOfProducts;
+    private ClientPriorityEnum clientPriority;
+    private Thread thread;
 
-    public Client(Restaurant restaurant, int itemsInOrder, String name) {
+    public Client(Restaurant restaurant, int numberOfProducts, String name, ClientPriorityEnum clientPriority) {
         this.restaurant = restaurant;
-        this.itemsInOrder = itemsInOrder;
+        this.numberOfProducts = numberOfProducts;
         this.name = name;
+        this.clientPriority = clientPriority;
+        this.thread = new Thread(this);
     }
 
     public String getClientName() {
         return name;
     }
 
-    public int getItemsInOrder() {
-        return itemsInOrder;
+    public int getNumberOfProducts() {
+        return numberOfProducts;
+    }
+
+    public ClientPriorityEnum getClientPriority(){
+        return clientPriority;
+    }
+
+    public Thread getThread(){
+        return thread;
     }
 
     @Override
     public void run() {
         System.out.println("Client " + name + " comes to restaurant " + restaurant.getName());
         this.cashDesk = chooseCashDesk();
-        System.out.println("Client " + getClientName() + " choosed the cashDesk#"+ cashDesk.getNumber());
+        System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());
         cashDesk.addClient(this);
         while (true) {
             if (cashDesk.getLock().tryLock()) {
@@ -41,10 +55,6 @@ public class Client extends Thread {
                     cashDesk.getLock().unlock();
                     break;
                 }
-            } else {
-                if (canChooseAnotherCashDesk()) {
-                    cashDesk.removeClient(this);
-                }
             }
         }
         cashDesk.removeClient(this);
@@ -52,24 +62,16 @@ public class Client extends Thread {
     }
 
     private CashDesk chooseCashDesk(){
-        CashDesk result = restaurant.getCashDesks().get(0);
-        for (CashDesk cashDesk : restaurant.getCashDesks()) {
-            if(cashDesk.getClients().size() < result.getClients().size()) {
-                result = cashDesk;
+        List<CashDesk> listOfCashDesk = restaurant.getCashDesks();
+        CashDesk cashDeskWithLowestNumberOfClients = restaurant.getCashDesks().get(0);
+        for (CashDesk cashDesk: listOfCashDesk){
+            if (cashDeskWithLowestNumberOfClients.getClients().size() > cashDesk.getClients().size()) {
+               cashDeskWithLowestNumberOfClients = cashDesk;
             }
         }
-        return result;
+        return cashDeskWithLowestNumberOfClients;
     }
 
-    private boolean canChooseAnotherCashDesk() {
-        CashDesk result = chooseCashDesk();
-        if(result.getClients().size() + 1 < cashDesk.getClients().size()) {
-            cashDesk = result;
-            cashDesk.addClient(this);
-            System.out.println("Client " + getClientName() + " moved to cashDesk#" + cashDesk.getNumber());
-            return true;
-        }
-        return false;
-    }
+
 }
 
