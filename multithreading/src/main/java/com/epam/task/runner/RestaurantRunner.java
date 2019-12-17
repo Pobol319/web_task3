@@ -55,7 +55,7 @@ public class RestaurantRunner {
         restaurant.addCashDesk(cashDesk4);*/
 
         Client client1 = new Client(restaurant, 10, "1", ClientPriorityEnum.IN_ORDER);
-        Client client2 = new Client(restaurant, 15, "2", ClientPriorityEnum.IN_ORDER);
+        Client client2 = new Client(restaurant, 15, "2", ClientPriorityEnum.OUT_OF_TURN);
         Client client3 = new Client(restaurant, 35, "3", ClientPriorityEnum.IN_ORDER);
         Client client4 = new Client(restaurant, 9, "4", ClientPriorityEnum.OUT_OF_TURN);
         Client client5 = new Client(restaurant, 1, "5", ClientPriorityEnum.IN_ORDER);

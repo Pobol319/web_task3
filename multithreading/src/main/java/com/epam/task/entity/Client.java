@@ -43,9 +43,13 @@ public class Client implements Runnable {
     public void run() {
         System.out.println("Client " + name + " comes to restaurant " + restaurant.getName());
         this.cashDesk = chooseCashDesk();
-        System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());
-        cashDesk.addClient(this);
-        while (true) {
+       /* System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());*/
+        try {
+            cashDesk.addClient(this);
+        } catch (ResourceException e) {
+            LOG.error("ResourceException!!! ", e);
+        }
+        /*while (true) {
             if (cashDesk.getLock().tryLock()) {
                 try {
                     cashDesk.serveClient(this);
@@ -56,9 +60,9 @@ public class Client implements Runnable {
                     break;
                 }
             }
-        }
-        cashDesk.removeClient(this);
-        System.out.println("Client " + getClientName() + " leaves restaurant");
+        }*/
+
+
     }
 
     private CashDesk chooseCashDesk(){
@@ -71,7 +75,6 @@ public class Client implements Runnable {
         }
         return cashDeskWithLowestNumberOfClients;
     }
-
 
 }
 
