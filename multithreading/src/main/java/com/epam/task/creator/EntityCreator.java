@@ -5,10 +5,7 @@ import com.epam.task.entity.Client;
 import com.epam.task.entity.ClientPriorityEnum;
 import com.epam.task.entity.Restaurant;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntityCreator {
 
@@ -16,7 +13,7 @@ public class EntityCreator {
         return Restaurant.getInstance(name);
     }
 
-    public List<CashDesk> createListOfCashDesk(Iterator itr) {
+    public List<CashDesk> createListOfCashDesk(Iterator itr, Comparator<Client> comparator) {
         List<CashDesk> listOfCashDesks = new ArrayList<>();
         while (itr.hasNext()) {
             Iterator<Map.Entry> tempItr = ((Map) itr.next()).entrySet().iterator();
@@ -25,7 +22,7 @@ public class EntityCreator {
                 int numberOfCashDesk = Integer.parseInt(entry.getValue().toString());
                 entry = tempItr.next();
                 int timeOfServiceForOneProduct = Integer.parseInt(entry.getValue().toString());
-                CashDesk cashDesk = new CashDesk(numberOfCashDesk, timeOfServiceForOneProduct);
+                CashDesk cashDesk = new CashDesk(numberOfCashDesk, timeOfServiceForOneProduct, comparator);
                 listOfCashDesks.add(cashDesk);
             }
         }

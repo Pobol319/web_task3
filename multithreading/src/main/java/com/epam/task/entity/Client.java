@@ -31,11 +31,11 @@ public class Client implements Runnable {
         return numberOfProducts;
     }
 
-    public ClientPriorityEnum getClientPriority(){
+    public ClientPriorityEnum getClientPriority() {
         return clientPriority;
     }
 
-    public Thread getThread(){
+    public Thread getThread() {
         return thread;
     }
 
@@ -43,12 +43,19 @@ public class Client implements Runnable {
     public void run() {
         System.out.println("Client " + name + " comes to restaurant " + restaurant.getName());
         this.cashDesk = chooseCashDesk();
-       /* System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());*/
+        /* System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());*/
+
+      //  cashDesk.getLockForAddToQueue().lock();
+        cashDesk.addClient(this);
+        //cashDesk.getLockForAddToQueue().unlock();
+        //cashDesk.getLockForServing().lock();
         try {
-            cashDesk.addClient(this);
+            cashDesk.serveClient();
         } catch (ResourceException e) {
             LOG.error("ResourceException!!! ", e);
         }
+        //cashDesk.getLockForServing().unlock();
+
         /*while (true) {
             if (cashDesk.getLock().tryLock()) {
                 try {
@@ -65,12 +72,12 @@ public class Client implements Runnable {
 
     }
 
-    private CashDesk chooseCashDesk(){
+    private CashDesk chooseCashDesk() {
         List<CashDesk> listOfCashDesk = restaurant.getCashDesks();
         CashDesk cashDeskWithLowestNumberOfClients = restaurant.getCashDesks().get(0);
-        for (CashDesk cashDesk: listOfCashDesk){
+        for (CashDesk cashDesk : listOfCashDesk) {
             if (cashDeskWithLowestNumberOfClients.getClients().size() > cashDesk.getClients().size()) {
-               cashDeskWithLowestNumberOfClients = cashDesk;
+                cashDeskWithLowestNumberOfClients = cashDesk;
             }
         }
         return cashDeskWithLowestNumberOfClients;

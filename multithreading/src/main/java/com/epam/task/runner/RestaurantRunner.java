@@ -8,10 +8,7 @@ import com.epam.task.entity.ClientPriorityEnum;
 import com.epam.task.entity.Restaurant;
 import com.epam.task.reader.JsonReader;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RestaurantRunner {
 
@@ -38,19 +35,19 @@ public class RestaurantRunner {
     }*/
 
 
-
     public static void main(String[] args) {
         String path = "src\\main\\resources\\restaurant.json";
 
         Restaurant restaurant = Restaurant.getInstance("Mcdonalds");
+        Comparator<Client> comparator = new ClientPriorityComparator().reversed();
 
-        CashDesk cashDesk1 = new CashDesk(1, 140);
-        CashDesk cashDesk2 = new CashDesk(2, 250);
-        CashDesk cashDesk3 = new CashDesk(3, 150);
-        CashDesk cashDesk4 = new CashDesk(4, 50);
+        CashDesk cashDesk1 = new CashDesk(1, 140, comparator);
+        CashDesk cashDesk2 = new CashDesk(2, 250, comparator);
+        CashDesk cashDesk3 = new CashDesk(3, 150, comparator);
+        CashDesk cashDesk4 = new CashDesk(4, 50, comparator);
 
         restaurant.addCashDesk(cashDesk1);
-        restaurant.addCashDesk(cashDesk2);
+        // restaurant.addCashDesk(cashDesk2);
         /*restaurant.addCashDesk(cashDesk3);
         restaurant.addCashDesk(cashDesk4);*/
 
@@ -82,4 +79,6 @@ public class RestaurantRunner {
         }
 
     }
+
+
 }
