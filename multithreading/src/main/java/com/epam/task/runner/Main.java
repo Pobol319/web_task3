@@ -1,14 +1,17 @@
 package com.epam.task.runner;
 
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Comparator cc = new Comp();
+        LinkedList ln = new LinkedList();
+
+
+
+
+
+        /*Comparator cc = new Comp();
         Queue<Integer> q = new PriorityQueue(cc);
         Random random = new Random();
 
@@ -23,7 +26,7 @@ public class Main {
             System.out.print(q.element() + " ");
             q.poll();
         }
-
+*/
     }
 
 }

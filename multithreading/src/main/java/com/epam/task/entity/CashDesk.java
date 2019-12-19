@@ -9,47 +9,53 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CashDesk {
     private Lock lockForServing = new ReentrantLock();
-    private Lock lockForAddToQueue = new ReentrantLock();
-    private PriorityQueue<Client> clients;
+    private Lock lockForAddToTurn = new ReentrantLock();
+    private LinkedList<Client> clients;
     private int numberOfCashDesk;
     private int timeOfServiceForOneProduct;
 
-    public CashDesk(int numberOfCashDesk, int timeOfServiceForOneProduct, Comparator<Client> comparator) {
-        clients = new PriorityQueue<>(comparator);
+    public CashDesk(int numberOfCashDesk, int timeOfServiceForOneProduct) {
+        clients = new LinkedList<>();
         this.numberOfCashDesk = numberOfCashDesk;
         this.timeOfServiceForOneProduct = timeOfServiceForOneProduct;
     }
 
     public void serveClient() throws ResourceException {
         lockForServing.lock();
-        Client clientServiceAtCashDesk = clients.element();
-        System.out.println("Client " + clientServiceAtCashDesk.getClientName() + " is serving on cashDesk #" + numberOfCashDesk);
+        Client nextClientToServe = getNextClientToServe();
+        int indexOfClient = clients.indexOf(nextClientToServe);
+        System.out.println("Client " + nextClientToServe.getClientName() + " is serving on cashDesk #" + numberOfCashDesk);
         try {
-            TimeUnit.MILLISECONDS.sleep(timeOfServiceForOneProduct * clientServiceAtCashDesk.getNumberOfProducts());
+            TimeUnit.MILLISECONDS.sleep(timeOfServiceForOneProduct * nextClientToServe.getNumberOfProducts());
         } catch (InterruptedException e) {
             throw new ResourceException("InterruptedException!!!", e);
         }
-        System.out.println("Client " + clientServiceAtCashDesk.getClientName() + " is served");
-        clients.remove(clientServiceAtCashDesk);
-        System.out.println("Client " + clientServiceAtCashDesk.getClientName() + " leaves restaurant");
+        System.out.println("Client " + nextClientToServe.getClientName() + " is served");
+        clients.remove(indexOfClient);
+        System.out.println("Client " + nextClientToServe.getClientName() + " leaves restaurant");
         lockForServing.unlock();
     }
 
-    public PriorityQueue<Client> getClients() {
+    public List<Client> getClients() {
         return clients;
     }
 
     public void addClient(Client client) {
-        lockForAddToQueue.lock();
+        lockForAddToTurn.lock();
         System.out.println("Client " + client.getClientName() + " enter the cashDesk #" + numberOfCashDesk);
         clients.add(client);
-        lockForAddToQueue.unlock();
+        lockForAddToTurn.unlock();
     }
 
-    public void removeClient(Client client) {
-        System.out.println("Client " + client.getClientName() + " leaves restaurant");
-        clients.poll();
+    public Client getNextClientToServe(){
+        for(Client client: clients){
+            if (client.getClientPriority().equals(ClientPriorityEnum.OUT_OF_TURN)){
+                return client;
+            }
+        }
+        return clients.element();
     }
+    
 
     public int getNumberOfCashDesk() {
         return numberOfCashDesk;
@@ -59,8 +65,8 @@ public class CashDesk {
         return lockForServing;
     }
 
-    public Lock getLockForAddToQueue() {
-        return lockForAddToQueue;
+    public Lock getLockForAddToTurn() {
+        return lockForAddToTurn;
     }
 
 }

@@ -1,14 +1,13 @@
 package com.epam.task.runner;
 
-import com.epam.task.comparator.ClientPriorityComparator;
-import com.epam.task.creator.EntityCreator;
 import com.epam.task.entity.CashDesk;
 import com.epam.task.entity.Client;
 import com.epam.task.entity.ClientPriorityEnum;
 import com.epam.task.entity.Restaurant;
-import com.epam.task.reader.JsonReader;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RestaurantRunner {
 
@@ -29,8 +28,10 @@ public class RestaurantRunner {
         Iterator iteratorClients = jsonReader.getIteratorClients();
         List<Client> clients = creator.createListOfClients(iteratorClients,restaurant);
 
-        for (Client client: clients){
-            client.getThread().start();
+        ExecutorService executor = Executors.newFixedThreadPool(clients.size());
+
+         for (Client client : clients) {
+           executor.execute(client);
         }
     }*/
 
@@ -39,15 +40,14 @@ public class RestaurantRunner {
         String path = "src\\main\\resources\\restaurant.json";
 
         Restaurant restaurant = Restaurant.getInstance("Mcdonalds");
-        Comparator<Client> comparator = new ClientPriorityComparator().reversed();
 
-        CashDesk cashDesk1 = new CashDesk(1, 140, comparator);
-        CashDesk cashDesk2 = new CashDesk(2, 250, comparator);
-        CashDesk cashDesk3 = new CashDesk(3, 150, comparator);
-        CashDesk cashDesk4 = new CashDesk(4, 50, comparator);
+        CashDesk cashDesk1 = new CashDesk(1, 140);
+        CashDesk cashDesk2 = new CashDesk(2, 250);
+        CashDesk cashDesk3 = new CashDesk(3, 150);
+        CashDesk cashDesk4 = new CashDesk(4, 50);
 
         restaurant.addCashDesk(cashDesk1);
-        // restaurant.addCashDesk(cashDesk2);
+        restaurant.addCashDesk(cashDesk2);
         /*restaurant.addCashDesk(cashDesk3);
         restaurant.addCashDesk(cashDesk4);*/
 
@@ -74,9 +74,15 @@ public class RestaurantRunner {
         list.add(client9);
         list.add(client10);*/
 
+        ExecutorService executor = Executors.newFixedThreadPool(list.size());
+
         for (Client client : list) {
-            client.getThread().start();
+           executor.execute(client);
         }
+
+        /*for (Client client : list) {
+            client.getThread().start();
+        }*/
 
     }
 

@@ -13,7 +13,7 @@ public class EntityCreator {
         return Restaurant.getInstance(name);
     }
 
-    public List<CashDesk> createListOfCashDesk(Iterator itr, Comparator<Client> comparator) {
+    public List<CashDesk> createListOfCashDesk(Iterator itr) {
         List<CashDesk> listOfCashDesks = new ArrayList<>();
         while (itr.hasNext()) {
             Iterator<Map.Entry> tempItr = ((Map) itr.next()).entrySet().iterator();
@@ -22,14 +22,14 @@ public class EntityCreator {
                 int numberOfCashDesk = Integer.parseInt(entry.getValue().toString());
                 entry = tempItr.next();
                 int timeOfServiceForOneProduct = Integer.parseInt(entry.getValue().toString());
-                CashDesk cashDesk = new CashDesk(numberOfCashDesk, timeOfServiceForOneProduct, comparator);
+                CashDesk cashDesk = new CashDesk(numberOfCashDesk, timeOfServiceForOneProduct);
                 listOfCashDesks.add(cashDesk);
             }
         }
         return listOfCashDesks;
     }
 
-    public List<Client> createListOfClients(Iterator itr, Restaurant restaurant) {
+    public List<Client> createListOfClients(Iterator itr, String nameOfRestaurant) {
         List<Client> listOfCashDesks = new ArrayList<>();
         while (itr.hasNext()) {
             Iterator<Map.Entry> tempItr = ((Map) itr.next()).entrySet().iterator();
@@ -40,7 +40,7 @@ public class EntityCreator {
                 String clientPriority = entry.getValue().toString().toUpperCase();
                 entry = tempItr.next();
                 int numberOfProducts = Integer.parseInt(entry.getValue().toString());
-                Client client = new Client(restaurant, numberOfProducts, nameOfClient, ClientPriorityEnum.valueOf(clientPriority));
+                Client client = new Client(Restaurant.getInstance(nameOfRestaurant), numberOfProducts, nameOfClient, ClientPriorityEnum.valueOf(clientPriority));
                 listOfCashDesks.add(client);
             }
         }
