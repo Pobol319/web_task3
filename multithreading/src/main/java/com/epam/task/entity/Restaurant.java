@@ -2,32 +2,23 @@ package com.epam.task.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Restaurant {
-    private static Restaurant instance = null;
-    private static ReentrantLock lock = new ReentrantLock();
+    private static final AtomicReference<Restaurant> ref = new AtomicReference<>();
     private String name;
     private List<CashDesk> cashDesks;
 
     private Restaurant(String name) {
         this.name = name;
-        cashDesks = new ArrayList<CashDesk>();
+        cashDesks = new ArrayList<>();
     }
 
     public static Restaurant getInstance(String name) {
-        lock.lock();
-        try {
-            if (instance == null) {
-                synchronized (Restaurant.class) {
-                    Restaurant tempInstance = new Restaurant(name);
-                    instance = tempInstance;
-                }
-            }
-        } finally {
-            lock.unlock();
+        if (ref.get() == null) {
+            ref.compareAndSet(null, new Restaurant(name));
         }
-        return instance;
+        return ref.get();
     }
 
     public void addCashDesk(CashDesk cashDesk) {

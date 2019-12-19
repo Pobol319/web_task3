@@ -38,33 +38,12 @@ public class Client implements Runnable {
     public void run() {
         System.out.println("Client " + name + " comes to restaurant " + restaurant.getName());
         CashDesk cashDesk = chooseCashDesk();
-        /* System.out.println("Client " + getClientName() + " chose the cashDesk #"+ cashDesk.getNumberOfCashDesk());*/
-
-      //  cashDesk.getLockForAddToQueue().lock();
         cashDesk.addClient(this);
-        //cashDesk.getLockForAddToQueue().unlock();
-        //cashDesk.getLockForServing().lock();
         try {
             cashDesk.serveClient();
         } catch (ResourceException e) {
             LOG.error("ResourceException!!! ", e);
         }
-        //cashDesk.getLockForServing().unlock();
-
-        /*while (true) {
-            if (cashDesk.getLock().tryLock()) {
-                try {
-                    cashDesk.serveClient(this);
-                } catch (ResourceException e) {
-                    LOG.error("ResourceException!!! ", e);
-                } finally {
-                    cashDesk.getLock().unlock();
-                    break;
-                }
-            }
-        }*/
-
-
     }
 
     private CashDesk chooseCashDesk() {

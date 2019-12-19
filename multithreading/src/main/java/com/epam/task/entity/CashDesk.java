@@ -47,26 +47,13 @@ public class CashDesk {
         lockForAddToTurn.unlock();
     }
 
-    public Client getNextClientToServe(){
-        for(Client client: clients){
-            if (client.getClientPriority().equals(ClientPriorityEnum.OUT_OF_TURN)){
+    public Client getNextClientToServe() {
+        for (Client client : clients) {
+            if (client.getClientPriority().equals(ClientPriorityEnum.OUT_OF_TURN)) {
                 return client;
             }
         }
         return clients.element();
-    }
-    
-
-    public int getNumberOfCashDesk() {
-        return numberOfCashDesk;
-    }
-
-    public Lock getLockForServing() {
-        return lockForServing;
-    }
-
-    public Lock getLockForAddToTurn() {
-        return lockForAddToTurn;
     }
 
 }

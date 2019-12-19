@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.util.Iterator;
 
 
-public class JsonReader {
+public class JsonFileReader {
     private Object object;
     private JSONObject jsonObject;
 
-    public JsonReader(String path) throws JsonReaderException {
+    public JsonFileReader(String path) throws JsonReaderException {
         try {
             object = new JSONParser().parse(new FileReader(path));
         } catch (IOException | ParseException e) {
@@ -29,14 +29,14 @@ public class JsonReader {
         return (String) jsonObject.get("restaurantName");
     }
 
-    public Iterator getIteratorCashDesks() {
-        JSONArray ja = (JSONArray) jsonObject.get("cashDesks");
-        return ja.iterator();
+    public Iterator getCashDesksIterator() {
+        JSONArray jsonArray = (JSONArray) jsonObject.get("cashDesks");
+        return jsonArray.iterator();
     }
 
-    public Iterator getIteratorClients() {
-        JSONArray ja = (JSONArray) jsonObject.get("clients");
-        return ja.iterator();
+    public Iterator getClientsIterator() {
+        JSONArray jsonArray = (JSONArray) jsonObject.get("clients");
+        return jsonArray.iterator();
     }
 
 }

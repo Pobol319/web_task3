@@ -53,6 +53,21 @@
       "name": "7",
       "numberOfProducts": "3",
       "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "8",
+      "numberOfProducts": "5",
+      "clientPriority": "OUT_OF_TURN"
+    },
+    {
+      "name": "9",
+      "numberOfProducts": "13",
+      "clientPriority": "IN_ORDER"
+    },
+    {
+      "name": "10",
+      "numberOfProducts": "23",
+      "clientPriority": "OUT_OF_TURN"
     }
   ]
 }

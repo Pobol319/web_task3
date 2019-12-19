@@ -6,15 +6,15 @@ public class ResourceException extends Exception {
         super();
     }
 
-    public ResourceException(String message, Throwable cause){
-        super(message,cause);
+    public ResourceException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public ResourceException(String message){
+    public ResourceException(String message) {
         super(message);
     }
 
-    public ResourceException(Throwable cause){
+    public ResourceException(Throwable cause) {
         super(cause);
     }
 }

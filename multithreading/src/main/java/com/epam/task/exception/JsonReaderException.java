@@ -5,15 +5,15 @@ public class JsonReaderException extends Exception {
         super();
     }
 
-    public JsonReaderException(String message, Throwable cause){
-        super(message,cause);
+    public JsonReaderException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public JsonReaderException(String message){
+    public JsonReaderException(String message) {
         super(message);
     }
 
-    public JsonReaderException(Throwable cause){
+    public JsonReaderException(Throwable cause) {
         super(cause);
     }
 }
