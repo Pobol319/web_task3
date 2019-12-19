@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Director {
-    public static final String PATH_TO_JSON_FILE = "src\\main\\resources\\restaurant.json";
+    private static final String PATH_TO_JSON_FILE = "src\\main\\resources\\restaurant.json";
 
     public static void main(String[] args) throws JsonReaderException {
         EntityCreator creator = new EntityCreator();
